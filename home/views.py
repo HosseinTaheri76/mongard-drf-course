@@ -1,9 +1,19 @@
-from django.shortcuts import render
+# from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
-from django.views.generic import View
+# @api_view()
+# def home(request):
+#     return Response({
+#         'NID': '0440687373',
+#         'name': "Hossein",
+#         'age': 25
+#     })
 
-class HomePageView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'home/home.html')
-
-
+class Home(APIView):
+    def get(self, request):
+        return Response({
+            'NID': '0440687373',
+            'name': "Hossein",
+            'age': 25
+        })
