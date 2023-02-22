@@ -2,6 +2,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from .models import Person
+from .serializers import PersonSerializer
+
 # @api_view()
 # def home(request):
 #     return Response({
@@ -12,13 +15,8 @@ from rest_framework.response import Response
 
 class Home(APIView):
     def get(self, request):
-        print(request.data)
-        return Response({
-            'NID': '0440687373',
-            'name': request.query_params.get('name', 'not specified'),
-            'age': 25
-        })
+        persons = Person.objects.all()
+        ser_data = PersonSerializer(persons, many=True)
+        return Response(ser_data.data)
 
-    def post(self, request):
-        data = request.data
-        return Response({v: k for k, v in data.items()})
+
