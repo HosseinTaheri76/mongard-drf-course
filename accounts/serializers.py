@@ -13,8 +13,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password', 'password2']
         extra_kwargs = {
             'password': {'write_only': True},
-            'username': {'validators': [MinLengthValidator(3, 'username must be at least 3 characters.')]}
         }
+
+    def create(self, validated_data):
+        del validated_data['password2']
+        return User.objects.create_user(**validated_data)
 
     def validate_username(self, value):
         if 'admin' in value:
