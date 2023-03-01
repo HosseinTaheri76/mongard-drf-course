@@ -9,10 +9,16 @@ class PersonSerializer(serializers.Serializer):
     age = serializers.IntegerField()
     email = serializers.EmailField()
 
+
 class QuestionSerializer(serializers.ModelSerializer):
+    answers = serializers.SerializerMethodField()
+
     class Meta:
         model = Question
         fields = '__all__'
+
+    def get_answers(self, obj):
+        return AnswerSerializer(obj.answers.all(), many=True).data
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:

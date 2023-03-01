@@ -15,19 +15,14 @@ class Home(APIView):
         ser_data = PersonSerializer(persons, many=True)
         return Response(ser_data.data)
 
-class QuestionView(APIView):
 
+class QuestionListView(APIView):
     def get(self, request):
         srz_data = QuestionSerializer(Question.objects.all(), many=True).data
         return Response(srz_data)
 
-    def post(self, request):
-        srz_data = QuestionSerializer(data=request.data)
-        if srz_data.is_valid():
-            srz_data.save()
-            return Response(srz_data.data, status=status.HTTP_201_CREATED)
-        return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class QuestionUpdateView(APIView):
     def put(self, request, pk):
         question = Question.objects.get(pk=pk)
         srz_data = QuestionSerializer(instance=question, data=request.data, partial=True)
@@ -36,7 +31,18 @@ class QuestionView(APIView):
             return Response(srz_data.data, status=status.HTTP_200_OK)
         return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class QuestionDeleteView(APIView):
     def delete(self, request, pk):
         question = Question.objects.get(pk=pk)
         question.delete()
         return Response({'message': 'question deleted'}, status=status.HTTP_200_OK)
+
+
+class QuestionCreateView(APIView):
+    def post(self, request):
+        srz_data = QuestionSerializer(data=request.data)
+        if srz_data.is_valid():
+            srz_data.save()
+            return Response(srz_data.data, status=status.HTTP_201_CREATED)
+        return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
