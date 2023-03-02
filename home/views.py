@@ -54,6 +54,6 @@ class QuestionCreateView(APIView):
     def post(self, request):
         srz_data = QuestionSerializer(data=request.data)
         if srz_data.is_valid():
-            srz_data.save()
+            srz_data.save(user=request.user)
             return Response(srz_data.data, status=status.HTTP_201_CREATED)
         return Response(srz_data.errors, status=status.HTTP_400_BAD_REQUEST)
