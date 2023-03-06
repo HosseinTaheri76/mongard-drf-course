@@ -19,7 +19,12 @@ class Home(APIView):
 
 
 class QuestionListView(APIView):
+    """
+    get all questions via GET request.
+    """
     throttle_scope = 'questions'
+    # for sake of documentation
+    serializer_class = QuestionSerializer
 
     def get(self, request):
         srz_data = QuestionSerializer(Question.objects.all(), many=True).data
